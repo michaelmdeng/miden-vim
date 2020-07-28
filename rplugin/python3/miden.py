@@ -1,4 +1,7 @@
 import neovim
+from glob import glob
+import os
+import subprocess
 
 def _strip_suffix(path, suffix):
     """ strip suffix from string """
@@ -8,6 +11,16 @@ def _strip_suffix(path, suffix):
 class Miden:
     def __init__(self, vim):
         self.vim = vim
+
+    @neovim.command('VWAllToHTML', nargs='*')
+    def vw_all_to_html(self, args):
+        vw_dir = os.path.expanduser('~/Dropbox/vimwiki/wiki')
+        files = glob(vw_dir + "/**/*.md") + glob(vw_dir + "/*.md")
+        vim.out_write(files[0])
+        html_dir = os.path.expanduser('~/Dropbox/vimwiki/html')
+        cmds = [["pandoc", "-r", "markdown", "-w", "html", f"{f}", "-o", f"{html_dir}/{rel_path[:len(rel_path) - 3]}.html"] for f in files]
+        vim.out_write(cmds[0])
+        [subprocess.run(args=cmd) for cmd in cmds]
 
     @neovim.command('ScAddPackage', nargs='*')
     def sc_add_package(self, args):
