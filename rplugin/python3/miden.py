@@ -16,10 +16,10 @@ class Miden:
     def vw_all_to_html(self, args):
         vw_dir = os.path.expanduser('~/Dropbox/vimwiki/wiki')
         files = glob(vw_dir + "/**/*.md") + glob(vw_dir + "/*.md")
-        vim.out_write(files[0])
+        self.vim.out_write(files[0])
         html_dir = os.path.expanduser('~/Dropbox/vimwiki/html')
         cmds = [["pandoc", "-r", "markdown", "-w", "html", f"{f}", "-o", f"{html_dir}/{rel_path[:len(rel_path) - 3]}.html"] for f in files]
-        vim.out_write(cmds[0])
+        self.vim.out_write(cmds[0])
         [subprocess.run(args=cmd) for cmd in cmds]
 
     @neovim.command('ScAddPackage', nargs='*')
