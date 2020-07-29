@@ -19,7 +19,7 @@ class Miden:
         rel_paths = [f[len(vw_dir) + 1:] for f in files]
         html_dir = os.path.expanduser('~/Dropbox/vimwiki/html')
         cmds = [["pandoc", "-r", "markdown", "-w", "html", f, "-o", f"{html_dir}/{rel_path[:len(rel_path) - 3]}.html"] for (f, rel_path) in zip(files, rel_paths)]
-        self.vim.out_write(files[0] + "\n" + rel_paths[0] + "\n" + cmds[0])
+        self.vim.out_write(files[0] + "\n" + rel_paths[0] + "\n" + " ".join(cmds[0]))
         [subprocess.run(args=cmd) for cmd in cmds]
 
     @neovim.command('ScAddPackage', nargs='*')
